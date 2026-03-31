@@ -2,7 +2,7 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "mvd1990vic",
   "license": "MIT",
   "repository": {
