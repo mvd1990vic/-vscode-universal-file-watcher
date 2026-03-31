@@ -44,7 +44,7 @@ export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
         env: w.env ?? {},
         encoding: (w.encoding ?? 'utf8') as BufferEncoding,
         parseStderr: w.parseStderr === true,
-        applyTo: w.applyTo ?? 'savedFile',
+        applyTo: w.applyTo ?? 'matchedFile',
     }));
 
     return {

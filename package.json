@@ -2,7 +2,7 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "publisher": "mvd1990vic",
   "license": "MIT",
   "repository": {
@@ -129,7 +129,7 @@
               "applyTo": {
                 "type": "string",
                 "enum": ["savedFile", "matchedFile", "allFiles"],
-                "default": "savedFile",
+                "default": "matchedFile",
                 "markdownDescription": "Which file to attach diagnostics to: `savedFile` (always the file that was saved), `matchedFile` (use `file` capture group from outputPattern), `allFiles` (combine both strategies)."
               }
             }
