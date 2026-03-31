@@ -17,6 +17,15 @@ let diagnosticsManager: DiagnosticsManager;
 let statusBar: StatusBarManager;
 
 export function activate(context: vscode.ExtensionContext): void {
+    try {
+        activateInner(context);
+    } catch (err) {
+        vscode.window.showErrorMessage(`Universal File Watcher failed to activate: ${err}`);
+        throw err;
+    }
+}
+
+function activateInner(context: vscode.ExtensionContext): void {
     outputChannel = vscode.window.createOutputChannel('Universal File Watcher');
     diagnosticsManager = new DiagnosticsManager();
     statusBar = new StatusBarManager();
