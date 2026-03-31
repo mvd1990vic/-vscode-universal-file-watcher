@@ -1,0 +1,44 @@
+{
+  "universalFileWatcher.watchers": [
+    {
+      "name": "shellcheck",
+      "filePattern": ["**/*.sh", "**/*.bash"],
+      "command": "shellcheck -f gcc ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning|note): (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": true
+    },
+    {
+      "name": "hadolint (Dockerfile)",
+      "filePattern": "**/Dockerfile*",
+      "command": "hadolint --format=tty ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+) (?<severity>error|warning|info|style|ignore) (?<code>DL\\d+|SC\\d+): (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": true
+    },
+    {
+      "name": "markdownlint",
+      "filePattern": "**/*.md",
+      "command": "markdownlint --dot ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+)(?::(?<col>\\d+))? (?<code>MD\\d+)/[^ ]+ (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": false
+    },
+    {
+      "name": "custom script",
+      "filePattern": "**/*.py",
+      "command": "python scripts/my_checker.py ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning): (?<message>.+)$",
+      "severity": "error",
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "MY_VAR": "value"
+      },
+      "applyTo": "savedFile",
+      "enabled": false
+    }
+  ]
+}

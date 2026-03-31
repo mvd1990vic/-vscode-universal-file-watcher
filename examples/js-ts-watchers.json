@@ -1,0 +1,24 @@
+{
+  "universalFileWatcher.watchers": [
+    {
+      "name": "tsc",
+      "filePattern": ["**/*.ts", "**/*.tsx"],
+      "command": "npx tsc --noEmit --pretty false",
+      "outputPattern": "^(?<file>[^(]+)\\((?<line>\\d+),(?<col>\\d+)\\): (?<severity>error|warning) TS(?<code>\\d+): (?<message>.+)$",
+      "severity": "error",
+      "cwd": "${workspaceFolder}",
+      "applyTo": "matchedFile",
+      "enabled": true
+    },
+    {
+      "name": "eslint",
+      "filePattern": ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx"],
+      "command": "npx eslint --format=unix ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<message>.+) \\[(?<severity>Error|Warning)/(?<code>.+)\\]$",
+      "severity": "warning",
+      "cwd": "${workspaceFolder}",
+      "applyTo": "savedFile",
+      "enabled": true
+    }
+  ]
+}

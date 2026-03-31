@@ -1,0 +1,49 @@
+{
+  "universalFileWatcher.watchers": [
+    {
+      "name": "mypy",
+      "filePattern": "**/*.py",
+      "command": "mypy --show-column-numbers --no-error-summary ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning|note): (?<message>.+)$",
+      "severity": "error",
+      "applyTo": "savedFile",
+      "enabled": true
+    },
+    {
+      "name": "flake8",
+      "filePattern": "**/*.py",
+      "command": "flake8 --format=default ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<code>[A-Z]\\d+) (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": true
+    },
+    {
+      "name": "ruff",
+      "filePattern": "**/*.py",
+      "command": "ruff check --output-format=text ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<code>[A-Z]\\d+) (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": false
+    },
+    {
+      "name": "pylint",
+      "filePattern": "**/*.py",
+      "command": "pylint --output-format=text ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>\\w+) \\((?<code>[^)]+)\\) (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": false
+    },
+    {
+      "name": "bandit",
+      "filePattern": "**/*.py",
+      "command": "bandit -q -f txt ${file}",
+      "outputPattern": "^>> Issue: \\[(?<code>[^\\]]+)\\] (?<message>.+)$",
+      "severity": "warning",
+      "applyTo": "savedFile",
+      "enabled": false
+    }
+  ]
+}

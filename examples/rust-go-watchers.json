@@ -1,0 +1,35 @@
+{
+  "universalFileWatcher.watchers": [
+    {
+      "name": "cargo check",
+      "filePattern": "**/*.rs",
+      "command": "cargo check --message-format=short 2>&1",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning)(?:\\[(?<code>[^\\]]+)\\])?: (?<message>.+)$",
+      "severity": "error",
+      "cwd": "${workspaceFolder}",
+      "applyTo": "matchedFile",
+      "enabled": true
+    },
+    {
+      "name": "go vet",
+      "filePattern": "**/*.go",
+      "command": "go vet ./...",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+)(?::(?<col>\\d+))?: (?<message>.+)$",
+      "severity": "warning",
+      "cwd": "${workspaceFolder}",
+      "parseStderr": true,
+      "applyTo": "matchedFile",
+      "enabled": true
+    },
+    {
+      "name": "golangci-lint",
+      "filePattern": "**/*.go",
+      "command": "golangci-lint run --out-format=line-number ${file}",
+      "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<message>.+) \\((?<code>[^)]+)\\)$",
+      "severity": "warning",
+      "cwd": "${workspaceFolder}",
+      "applyTo": "savedFile",
+      "enabled": false
+    }
+  ]
+}
