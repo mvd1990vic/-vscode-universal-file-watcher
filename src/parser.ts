@@ -6,6 +6,8 @@ export interface ParsedDiagnostic {
     /** Absolute path or undefined (means: attach to the saved file). */
     file: string | undefined;
     diagnostic: vscode.Diagnostic;
+    /** True when col was captured but endCol was not — caller should expand range to word boundaries. */
+    needsWordExpansion: boolean;
 }
 
 /**
@@ -33,10 +35,21 @@ export function parseLine(
     const groups = match.groups;
 
     // --- location ---
-    const lineNum = Math.max(0, parseInt(groups['line'] ?? '1', 10) - 1);
-    const colNum = Math.max(0, parseInt(groups['col'] ?? groups['column'] ?? '1', 10) - 1);
+    const hasLine = !!groups['line'];
+    const hasCol = !!(groups['col'] ?? groups['column']);
+    const hasEndCol = !!groups['endCol'];
+
+    const lineNum = hasLine ? Math.max(0, parseInt(groups['line']!, 10) - 1) : 0;
+    const colNum = hasCol ? Math.max(0, parseInt((groups['col'] ?? groups['column'])!, 10) - 1) : 0;
     const endLineNum = groups['endLine'] ? Math.max(0, parseInt(groups['endLine'], 10) - 1) : lineNum;
-    const endColNum = groups['endCol'] ? Math.max(0, parseInt(groups['endCol'], 10) - 1) : colNum + 1;
+    // No col at all → whole line; col but no endCol → placeholder (will expand to word); endCol → exact
+    const endColNum = hasEndCol
+        ? Math.max(0, parseInt(groups['endCol']!, 10) - 1)
+        : hasCol
+            ? colNum + 1
+            : Number.MAX_SAFE_INTEGER;
+
+    const needsWordExpansion = hasCol && !hasEndCol;
 
     const range = new vscode.Range(lineNum, colNum, endLineNum, endColNum);
 
@@ -65,7 +78,7 @@ export function parseLine(
             : path.resolve(workspaceFolderPath ?? path.dirname(savedFilePath), rawFile);
     }
 
-    return { file, diagnostic };
+    return { file, diagnostic, needsWordExpansion };
 }
 
 /**
@@ -73,19 +86,26 @@ export function parseLine(
  * When applyTo is 'savedFile', all diagnostics go to savedFilePath regardless of the
  * captured file group.
  */
+export interface ParseOutput {
+    diagMap: Map<string, vscode.Diagnostic[]>;
+    /** Diagnostics whose range should be expanded to word boundaries (col was given but endCol was not). */
+    wordExpansionSet: Set<vscode.Diagnostic>;
+}
+
 export function parseOutput(
     stdout: string,
     stderr: string,
     watcher: WatcherConfig,
     savedFilePath: string,
     workspaceFolderPath: string | undefined,
-): Map<string, vscode.Diagnostic[]> {
-    const result = new Map<string, vscode.Diagnostic[]>();
+): ParseOutput {
+    const diagMap = new Map<string, vscode.Diagnostic[]>();
+    const wordExpansionSet = new Set<vscode.Diagnostic>();
 
     const addDiag = (filePath: string, diag: vscode.Diagnostic) => {
-        const list = result.get(filePath) ?? [];
+        const list = diagMap.get(filePath) ?? [];
         list.push(diag);
-        result.set(filePath, list);
+        diagMap.set(filePath, list);
     };
 
     const outputLines = stdout.split(/\r?\n/);
@@ -103,7 +123,11 @@ export function parseOutput(
             continue;
         }
 
-        const { file: capturedFile, diagnostic } = parsed;
+        const { file: capturedFile, diagnostic, needsWordExpansion } = parsed;
+
+        if (needsWordExpansion) {
+            wordExpansionSet.add(diagnostic);
+        }
 
         if (watcher.applyTo === 'savedFile') {
             addDiag(savedFilePath, diagnostic);
@@ -118,5 +142,5 @@ export function parseOutput(
         }
     }
 
-    return result;
+    return { diagMap, wordExpansionSet };
 }

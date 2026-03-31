@@ -181,7 +181,7 @@ async function runAllMatchingWatchers(
                 return;
             }
 
-            const diagMap = parseOutput(
+            const { diagMap, wordExpansionSet } = parseOutput(
                 result.stdout,
                 result.stderr,
                 watcher,
@@ -191,8 +191,9 @@ async function runAllMatchingWatchers(
 
             let watcherErrors = 0;
             for (const [diagFilePath, diagnostics] of diagMap) {
-                diagnosticsManager.set(diagFilePath, watcher.name, diagnostics);
-                watcherErrors += diagnostics.filter(
+                const expanded = await expandWordRanges(diagFilePath, diagnostics, wordExpansionSet);
+                diagnosticsManager.set(diagFilePath, watcher.name, expanded);
+                watcherErrors += expanded.filter(
                     d => d.severity === 0 /* Error */
                 ).length;
             }
@@ -217,4 +218,63 @@ function matchesPattern(filePath: string, pattern: string | string[]): boolean {
     const patterns = Array.isArray(pattern) ? pattern : [pattern];
     const normalized = filePath.replace(/\\/g, '/');
     return patterns.some(p => minimatch(normalized, p, { dot: true, matchBase: true }));
+}
+
+async function expandWordRanges(
+    filePath: string,
+    diagnostics: vscode.Diagnostic[],
+    wordExpansionSet: Set<vscode.Diagnostic>,
+): Promise<vscode.Diagnostic[]> {
+    const toExpand = diagnostics.filter(d => wordExpansionSet.has(d));
+    if (toExpand.length === 0) {
+        return diagnostics;
+    }
+
+    let doc: vscode.TextDocument | undefined;
+    try {
+        doc = await vscode.workspace.openTextDocument(filePath);
+    } catch {
+        return diagnostics;
+    }
+
+    return diagnostics.map(diag => {
+        if (!wordExpansionSet.has(diag)) {
+            return diag;
+        }
+
+        const lineNum = diag.range.start.line;
+        const col = diag.range.start.character;
+
+        if (lineNum >= doc!.lineCount) {
+            return diag;
+        }
+
+        const lineText = doc!.lineAt(lineNum).text;
+
+        let wordStart = col;
+        while (wordStart > 0 && /\w/.test(lineText[wordStart - 1])) {
+            wordStart--;
+        }
+
+        let wordEnd = col;
+        while (wordEnd < lineText.length && /\w/.test(lineText[wordEnd])) {
+            wordEnd++;
+        }
+
+        // If col is not on a word character, keep single-char highlight
+        if (wordEnd === wordStart) {
+            wordEnd = col + 1;
+        }
+
+        const newDiag = new vscode.Diagnostic(
+            new vscode.Range(lineNum, wordStart, lineNum, wordEnd),
+            diag.message,
+            diag.severity,
+        );
+        newDiag.source = diag.source;
+        newDiag.code = diag.code;
+        newDiag.tags = diag.tags;
+        newDiag.relatedInformation = diag.relatedInformation;
+        return newDiag;
+    });
 }
