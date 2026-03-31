@@ -80,7 +80,7 @@ function activateInner(context: vscode.ExtensionContext): void {
 
     context.subscriptions.push(
         vscode.workspace.onDidOpenTextDocument(doc => {
-            const cfg = getExtensionConfig();
+            const cfg = getExtensionConfig(doc.uri);
             if (cfg.runOnOpen) {
                 scheduleRun(doc.uri);
             }
@@ -115,7 +115,7 @@ export function deactivate(): void {
 // ---------------------------------------------------------------------------
 
 function scheduleRun(fileUri: vscode.Uri, force = false): void {
-    const cfg = getExtensionConfig();
+    const cfg = getExtensionConfig(fileUri);
     if (!cfg.enabled && !force) {
         return;
     }
@@ -144,7 +144,7 @@ async function runAllMatchingWatchers(
     const filePath = fileUri.fsPath;
     const workspaceFolder = vscode.workspace.getWorkspaceFolder(fileUri);
 
-    const cfg = getExtensionConfig();
+    const cfg = getExtensionConfig(fileUri);
 
     // Cancel any previous run for this file.
     abortControllers.get(filePath)?.abort();

@@ -2,7 +2,7 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "mvd1990vic",
   "license": "MIT",
   "repository": {
@@ -63,6 +63,7 @@
       "properties": {
         "universalFileWatcher.watchers": {
           "type": "array",
+          "scope": "resource",
           "default": [],
           "markdownDescription": "List of file watchers. Each watcher defines a command to run on file save and a regex to parse its output into diagnostics.",
           "items": {
@@ -136,26 +137,31 @@
         },
         "universalFileWatcher.enabled": {
           "type": "boolean",
+          "scope": "resource",
           "default": true,
           "description": "Master switch — enable or disable all watchers."
         },
         "universalFileWatcher.runOnOpen": {
           "type": "boolean",
+          "scope": "resource",
           "default": false,
           "description": "Also run watchers when a file is first opened (in addition to on save)."
         },
         "universalFileWatcher.clearDiagnosticsOnSave": {
           "type": "boolean",
+          "scope": "resource",
           "default": true,
           "description": "Clear previous diagnostics for a file before running watchers on it."
         },
         "universalFileWatcher.showOutputOnError": {
           "type": "boolean",
+          "scope": "resource",
           "default": false,
           "description": "Automatically reveal the Output channel when a watcher produces errors."
         },
         "universalFileWatcher.debounceMs": {
           "type": "number",
+          "scope": "resource",
           "default": 300,
           "description": "Milliseconds to wait after a save before running watchers (debounce)."
         }

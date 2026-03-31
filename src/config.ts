@@ -28,8 +28,8 @@ export interface ExtensionConfig {
     debounceMs: number;
 }
 
-export function getExtensionConfig(): ExtensionConfig {
-    const raw = vscode.workspace.getConfiguration('universalFileWatcher');
+export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
+    const raw = vscode.workspace.getConfiguration('universalFileWatcher', resource ?? null);
 
     const rawWatchers = raw.get<Partial<WatcherConfig>[]>('watchers', []);
     const watchers: WatcherConfig[] = rawWatchers.map(w => ({
