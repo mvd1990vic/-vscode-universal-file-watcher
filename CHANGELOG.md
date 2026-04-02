@@ -7,6 +7,13 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.1] — 2026-04-02
+
+### Fixed
+- Excluded `__mocks__/`, `vitest.config.ts` and `src/test` from `tsconfig.json` so `tsc` no longer errors on files outside `rootDir`.
+
+---
+
 ## [1.4.0] — 2026-04-02
 
 ### Added
