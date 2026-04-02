@@ -25,16 +25,6 @@ Inspired by PyCharm's *File Watchers*, this extension is a thin, generic bridge 
 
 ### 1 — Install the extension
 
-**From the Marketplace (once published):**
-
-1. Open VS Code.
-2. Press `Ctrl+P` / `Cmd+P` and run:
-   ```
-   ext install mvd1990vic.universal-file-watcher
-   ```
-
-**From source (development):**
-
 ```bash
 git clone https://github.com/mvd1990vic/vscode-universal-file-watcher
 cd vscode-universal-file-watcher
@@ -315,20 +305,6 @@ Install locally:
 ```bash
 code --install-extension universal-file-watcher-1.0.0.vsix
 ```
-
-### Publish to VS Code Marketplace
-
-1. [Create a publisher](https://marketplace.visualstudio.com/manage) on the VS Code Marketplace.
-2. Replace `"mvd1990vic"` in `package.json` with your publisher ID.
-3. Generate a Personal Access Token (PAT) with **Marketplace → Manage** scope.
-4. Log in and publish:
-
-```bash
-npx vsce login mvd1990vic
-npx vsce publish
-```
-
-Or let GitHub Actions publish automatically on a new GitHub Release (set `VSCE_TOKEN` secret in your repo settings).
 
 ---
 
