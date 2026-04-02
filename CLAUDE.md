@@ -56,8 +56,9 @@ Unit tests use **vitest** — no VS Code needed, runs in pure Node.js.
 ## Releases
 
 Releases are handled by Claude. Workflow:
-1. Bump `version` in `package.json`
-2. `git commit`, `git tag vX.Y.Z`, `git push && git push origin vX.Y.Z`
-3. GitHub Actions (`.github/workflows/ci.yml`) builds the `.vsix` and attaches it to the GitHub Release automatically on `v*` tags
+1. Update `CHANGELOG.md` — add a new `## [X.Y.Z] — YYYY-MM-DD` section with `### Added / Fixed / Changed` entries describing what changed.
+2. Bump `version` in `package.json`.
+3. `git commit`, `git tag vX.Y.Z`, `git push && git push origin vX.Y.Z`
+4. GitHub Actions (`.github/workflows/ci.yml`) builds the `.vsix` and attaches it to the GitHub Release automatically on `v*` tags.
 
 `.vsix` files are in `.gitignore` — never commit them.

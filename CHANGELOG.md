@@ -7,6 +7,48 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.0] — 2026-04-02
+
+### Added
+- Unit test suite with vitest (55 tests, no VS Code needed).
+- `__mocks__/vscode.ts` — minimal vscode API mock for tests.
+- CI now runs `npm test` before compile on every push.
+
+---
+
+## [1.3.0] — 2026-04-02
+
+### Added
+- `continuationPattern` — regex for context lines printed after the main diagnostic; matched lines are appended to the previous diagnostic's message. Empty line resets context.
+- `ignoreExitCodes` — non-zero exit codes not in this list are logged as unexpected in the Output Channel.
+- `codeUrl` — URL template with `${code}` placeholder; makes error codes in the Problems panel clickable links to documentation.
+
+---
+
+## [1.2.1] — 2026-04-02
+
+### Fixed
+- Changed default `applyTo` from `savedFile` to `matchedFile`. Tools that scan the whole project were attaching all diagnostics to the saved file instead of the actual files that contain errors.
+
+---
+
+## [1.2.0] — 2026-04-02
+
+### Added
+- All settings are now `scope: resource` — each folder in a multi-root workspace can independently override `watchers` and all other settings.
+- `getExtensionConfig` accepts a `fileUri` so per-folder configuration is read correctly.
+
+---
+
+## [1.1.0] — 2026-03-31
+
+### Added
+- When no `col` group is captured, the whole line is underlined.
+- When no `line` group is captured, the diagnostic is placed on line 0 (first line of file).
+- When `col` is captured but `endCol` is not, the entire word at that position is underlined instead of a single character.
+
+---
+
 ## [1.0.0] — 2024-01-01
 
 ### Added
