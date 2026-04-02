@@ -181,6 +181,10 @@ async function runAllMatchingWatchers(
                 return;
             }
 
+            if (result.exitCode !== 0 && !watcher.ignoreExitCodes.includes(result.exitCode)) {
+                outputChannel.appendLine(`  ⚠ [${watcher.name}] Unexpected exit code ${result.exitCode} — add to ignoreExitCodes if expected`);
+            }
+
             const { diagMap, wordExpansionSet } = parseOutput(
                 result.stdout,
                 result.stderr,

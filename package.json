@@ -2,7 +2,7 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.2.1",
+  "version": "1.3.0",
   "publisher": "mvd1990vic",
   "license": "MIT",
   "repository": {
@@ -131,6 +131,20 @@
                 "enum": ["savedFile", "matchedFile", "allFiles"],
                 "default": "matchedFile",
                 "markdownDescription": "Which file to attach diagnostics to: `savedFile` (always the file that was saved), `matchedFile` (use `file` capture group from outputPattern), `allFiles` (combine both strategies)."
+              },
+              "continuationPattern": {
+                "type": "string",
+                "markdownDescription": "Regex for continuation lines (context printed after the main diagnostic line). Lines matching this pattern are appended to the previous diagnostic's message. Supports a `message` named group; otherwise the whole line is used."
+              },
+              "ignoreExitCodes": {
+                "type": "array",
+                "items": { "type": "number" },
+                "default": [],
+                "description": "Exit codes that are expected and should not produce a warning (e.g. [1] for linters that exit with 1 when warnings are found)."
+              },
+              "codeUrl": {
+                "type": "string",
+                "markdownDescription": "URL template for error code documentation. Use `${code}` as a placeholder. When set, the code in the Problems panel becomes a clickable link. Example: `https://mypy.readthedocs.io/en/stable/error_codes.html#${code}`"
               }
             }
           }

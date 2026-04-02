@@ -9,6 +9,8 @@ export interface WatcherConfig {
     filePattern: string | string[];
     command: string;
     outputPattern: string;
+    /** Regex matching continuation lines — their `message` group (or full line) is appended to the previous diagnostic. */
+    continuationPattern: string | undefined;
     severity: Severity;
     enabled: boolean;
     runInShell: boolean;
@@ -17,6 +19,10 @@ export interface WatcherConfig {
     encoding: BufferEncoding;
     parseStderr: boolean;
     applyTo: ApplyTo;
+    /** Exit codes that are expected (e.g. 1 for linters that exit non-zero on warnings). Non-zero codes not in this list are logged as unexpected. */
+    ignoreExitCodes: number[];
+    /** URL template for the error code documentation. Use \`${code}\` as placeholder. Sets a clickable link in the Problems panel. */
+    codeUrl: string | undefined;
 }
 
 export interface ExtensionConfig {
@@ -37,6 +43,7 @@ export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
         filePattern: w.filePattern ?? '**/*',
         command: w.command ?? '',
         outputPattern: w.outputPattern ?? '',
+        continuationPattern: w.continuationPattern ?? undefined,
         severity: w.severity ?? 'error',
         enabled: w.enabled !== false,
         runInShell: w.runInShell !== false,
@@ -45,6 +52,8 @@ export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
         encoding: (w.encoding ?? 'utf8') as BufferEncoding,
         parseStderr: w.parseStderr === true,
         applyTo: w.applyTo ?? 'matchedFile',
+        ignoreExitCodes: w.ignoreExitCodes ?? [],
+        codeUrl: w.codeUrl ?? undefined,
     }));
 
     return {

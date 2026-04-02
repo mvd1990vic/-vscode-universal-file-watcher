@@ -82,7 +82,10 @@ The heart of the extension. Each element is a watcher object.
 | `env` | `object` | `{}` | Extra environment variables |
 | `encoding` | `string` | `"utf8"` | Output encoding (`utf8`, `latin1`, …) |
 | `parseStderr` | `boolean` | `false` | Parse stderr in addition to stdout |
-| `applyTo` | `"savedFile"\|"matchedFile"\|"allFiles"` | `"savedFile"` | Which file gets the diagnostics (see [below](#applyto)) |
+| `applyTo` | `"savedFile"\|"matchedFile"\|"allFiles"` | `"matchedFile"` | Which file gets the diagnostics (see [below](#applyto)) |
+| `continuationPattern` | `string` | — | Regex for context lines printed after the main diagnostic. Matched lines are appended to the previous diagnostic's message. Supports a `message` named group. |
+| `ignoreExitCodes` | `number[]` | `[]` | Exit codes that are expected (e.g. `[1]` for linters that exit with 1 on warnings). Others produce a warning in the output channel. |
+| `codeUrl` | `string` | — | URL template for error code docs. Use `${code}` as placeholder — the code in the Problems panel becomes a clickable link. |
 
 ### Other settings
 
@@ -151,7 +154,10 @@ Use `matchedFile` when the tool checks the whole project and reports many files 
   "name": "mypy",
   "filePattern": "**/*.py",
   "command": "mypy --show-column-numbers --no-error-summary ${file}",
-  "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning|note): (?<message>.+)$"
+  "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning): (?<message>.+?)(?:\\s+\\[(?<code>[a-z-]+)\\])?$",
+  "continuationPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): note: (?<message>.+)$",
+  "codeUrl": "https://mypy.readthedocs.io/en/stable/error_codes.html#${code}",
+  "ignoreExitCodes": [1]
 }
 ```
 

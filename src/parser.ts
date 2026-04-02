@@ -66,7 +66,16 @@ export function parseLine(
     const diagnostic = new vscode.Diagnostic(range, message, severity);
     diagnostic.source = watcher.name;
     if (code) {
-        diagnostic.code = code;
+        if (watcher.codeUrl) {
+            const url = watcher.codeUrl.replace(/\$\{code\}/g, encodeURIComponent(code));
+            try {
+                diagnostic.code = { value: code, target: vscode.Uri.parse(url, true) };
+            } catch {
+                diagnostic.code = code;
+            }
+        } else {
+            diagnostic.code = code;
+        }
     }
 
     // --- file ---
@@ -113,17 +122,35 @@ export function parseOutput(
         outputLines.push(...stderr.split(/\r?\n/));
     }
 
+    let contRegex: RegExp | undefined;
+    if (watcher.continuationPattern) {
+        try { contRegex = new RegExp(watcher.continuationPattern); } catch { /* invalid regex — ignore */ }
+    }
+
+    let lastDiagnostic: vscode.Diagnostic | undefined;
+
     for (const line of outputLines) {
         if (!line.trim()) {
+            lastDiagnostic = undefined;
             continue;
         }
 
         const parsed = parseLine(line, watcher, savedFilePath, workspaceFolderPath);
+
         if (!parsed) {
+            // Try continuation pattern before skipping the line
+            if (contRegex && lastDiagnostic) {
+                const m = contRegex.exec(line);
+                if (m) {
+                    const extra = (m.groups?.['message'] ?? line).trim();
+                    lastDiagnostic.message += '\n' + extra;
+                }
+            }
             continue;
         }
 
         const { file: capturedFile, diagnostic, needsWordExpansion } = parsed;
+        lastDiagnostic = diagnostic;
 
         if (needsWordExpansion) {
             wordExpansionSet.add(diagnostic);
