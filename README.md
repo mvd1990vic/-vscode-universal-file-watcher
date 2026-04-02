@@ -26,7 +26,7 @@ Inspired by PyCharm's *File Watchers*, this extension is a thin, generic bridge 
 ### 1 — Install the extension
 
 ```bash
-git clone https://github.com/mvd1990vic/vscode-universal-file-watcher
+git clone https://github.com/VictorMalyshkin/vscode-universal-file-watcher
 cd vscode-universal-file-watcher
 npm install
 npm run compile
@@ -284,7 +284,7 @@ Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`):
 ### Setup
 
 ```bash
-git clone https://github.com/mvd1990vic/vscode-universal-file-watcher
+git clone https://github.com/VictorMalyshkin/vscode-universal-file-watcher
 cd vscode-universal-file-watcher
 npm install
 ```

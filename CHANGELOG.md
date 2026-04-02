@@ -7,6 +7,13 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.3] — 2026-04-02
+
+### Changed
+- Publisher ID changed from `mvd1990vic` to `VictorMalyshkin` across `package.json`, README and CLAUDE.md.
+
+---
+
 ## [1.4.2] — 2026-04-02
 
 ### Changed

@@ -4,8 +4,8 @@
 
 VS Code extension — **Universal File Watcher**. Runs any CLI tool on file save and displays its output as inline diagnostics (squiggles + Problems panel). No tool-specific plugin needed.
 
-Publisher: `mvd1990vic`
-Repo: `github.com/mvd1990vic/-vscode-universal-file-watcher`
+Publisher: `VictorMalyshkin`
+Repo: `github.com/VictorMalyshkin/-vscode-universal-file-watcher`
 
 ## Architecture
 
