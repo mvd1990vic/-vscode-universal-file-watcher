@@ -2,7 +2,7 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "publisher": "mvd1990vic",
   "license": "MIT",
   "repository": {
@@ -68,7 +68,12 @@
           "markdownDescription": "List of file watchers. Each watcher defines a command to run on file save and a regex to parse its output into diagnostics.",
           "items": {
             "type": "object",
-            "required": ["name", "filePattern", "command", "outputPattern"],
+            "required": [
+              "name",
+              "filePattern",
+              "command",
+              "outputPattern"
+            ],
             "properties": {
               "name": {
                 "type": "string",
@@ -76,8 +81,15 @@
               },
               "filePattern": {
                 "oneOf": [
-                  { "type": "string" },
-                  { "type": "array", "items": { "type": "string" } }
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
                 ],
                 "description": "Glob pattern(s) of files that trigger this watcher. E.g. '**/*.py' or ['**/*.ts', '**/*.tsx']."
               },
@@ -91,7 +103,12 @@
               },
               "severity": {
                 "type": "string",
-                "enum": ["error", "warning", "info", "hint"],
+                "enum": [
+                  "error",
+                  "warning",
+                  "info",
+                  "hint"
+                ],
                 "default": "error",
                 "description": "Default severity when not captured by outputPattern."
               },
@@ -112,7 +129,9 @@
               },
               "env": {
                 "type": "object",
-                "additionalProperties": { "type": "string" },
+                "additionalProperties": {
+                  "type": "string"
+                },
                 "default": {},
                 "description": "Extra environment variables to set for the command."
               },
@@ -128,7 +147,11 @@
               },
               "applyTo": {
                 "type": "string",
-                "enum": ["savedFile", "matchedFile", "allFiles"],
+                "enum": [
+                  "savedFile",
+                  "matchedFile",
+                  "allFiles"
+                ],
                 "default": "matchedFile",
                 "markdownDescription": "Which file to attach diagnostics to: `savedFile` (always the file that was saved), `matchedFile` (use `file` capture group from outputPattern), `allFiles` (combine both strategies)."
               },
@@ -138,7 +161,9 @@
               },
               "ignoreExitCodes": {
                 "type": "array",
-                "items": { "type": "number" },
+                "items": {
+                  "type": "number"
+                },
                 "default": [],
                 "description": "Exit codes that are expected and should not produce a warning (e.g. [1] for linters that exit with 1 when warnings are found)."
               },
@@ -187,7 +212,8 @@
     "compile": "tsc -p ./",
     "watch": "tsc -watch -p ./",
     "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "package": "vsce package",
     "publish": "vsce publish"
   },
@@ -204,6 +230,7 @@
     "@vscode/vsce": "^2.23.0",
     "eslint": "^8.56.0",
     "mocha": "^10.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "vitest": "^4.1.2"
   }
 }

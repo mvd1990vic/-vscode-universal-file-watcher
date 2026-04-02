@@ -34,11 +34,24 @@ Data flow: `save → scheduleRun → runAllMatchingWatchers → runWatcher → p
 ## Commands
 
 ```bash
-npm run compile   # tsc one-shot
-npm run watch     # tsc watch
-npm run lint      # eslint src/
-npm run package   # vsce package → .vsix
+npm run compile      # tsc one-shot
+npm run watch        # tsc watch
+npm run lint         # eslint src/
+npm run test         # vitest run (all tests)
+npm run test:watch   # vitest watch mode
+npm run package      # vsce package → .vsix
 ```
+
+## Tests
+
+Unit tests use **vitest** — no VS Code needed, runs in pure Node.js.
+
+- `__mocks__/vscode.ts` — mock of the vscode API (Range, Diagnostic, Uri, workspace, etc.)
+- `vitest.config.ts` — aliases `vscode` → the mock, resolves `.js` imports to `.ts`
+- `src/test/parser.test.ts` — tests for `parseLine` and `parseOutput`
+- `src/test/config.test.ts` — tests for `toVscodeSeverity`, `expandVariables`, `getExtensionConfig`
+
+**Rule: write tests for every new feature before committing.** Run `npm test` after changes to confirm nothing is broken.
 
 ## Releases
 
