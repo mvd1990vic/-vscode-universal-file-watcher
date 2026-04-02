@@ -2,17 +2,17 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "publisher": "VictorMalyshkin",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/VictorMalyshkin/vscode-universal-file-watcher"
+    "url": "https://github.com/mvd1990vic/-vscode-universal-file-watcher"
   },
   "bugs": {
-    "url": "https://github.com/VictorMalyshkin/vscode-universal-file-watcher/issues"
+    "url": "https://github.com/mvd1990vic/-vscode-universal-file-watcher/issues"
   },
-  "homepage": "https://github.com/VictorMalyshkin/vscode-universal-file-watcher#readme",
+  "homepage": "https://github.com/mvd1990vic/-vscode-universal-file-watcher#readme",
   "engines": {
     "vscode": "^1.85.0"
   },

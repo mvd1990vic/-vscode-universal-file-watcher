@@ -7,6 +7,13 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.4] — 2026-04-02
+
+### Fixed
+- Restored correct GitHub repository URLs (`mvd1990vic`) in `package.json` — publisher ID and GitHub username are independent.
+
+---
+
 ## [1.4.3] — 2026-04-02
 
 ### Changed
