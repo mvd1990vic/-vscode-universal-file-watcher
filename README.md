@@ -156,7 +156,7 @@ Use `matchedFile` when the tool checks the whole project and reports many files 
   "command": "mypy --show-column-numbers --no-error-summary ${file}",
   "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning): (?<message>.+?)(?:\\s+\\[(?<code>[a-z-]+)\\])?$",
   "continuationPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): note: (?<message>.+)$",
-  "codeUrl": "https://mypy.readthedocs.io/en/stable/error_codes.html#${code}",
+  "codeUrl": "https://mypy.readthedocs.io/en/stable/error_codes.html#code-${code}",
   "ignoreExitCodes": [1]
 }
 ```
@@ -181,7 +181,9 @@ Use `matchedFile` when the tool checks the whole project and reports many files 
   "filePattern": "**/*.py",
   "command": "ruff check --output-format=text ${file}",
   "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<code>[A-Z]\\d+) (?<message>.+)$",
-  "severity": "warning"
+  "severity": "warning",
+  "codeUrl": "https://docs.astral.sh/ruff/rules/${code}",
+  "ignoreExitCodes": [1]
 }
 ```
 
@@ -206,7 +208,9 @@ Use `matchedFile` when the tool checks the whole project and reports many files 
   "filePattern": ["**/*.js", "**/*.ts", "**/*.jsx", "**/*.tsx"],
   "command": "npx eslint --format=unix ${file}",
   "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<message>.+) \\[(?<severity>Error|Warning)/(?<code>.+)\\]$",
-  "severity": "warning"
+  "severity": "warning",
+  "codeUrl": "https://eslint.org/docs/rules/${code}",
+  "ignoreExitCodes": [1]
 }
 ```
 
@@ -230,8 +234,9 @@ Use `matchedFile` when the tool checks the whole project and reports many files 
   "name": "shellcheck",
   "filePattern": ["**/*.sh", "**/*.bash"],
   "command": "shellcheck -f gcc ${file}",
-  "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning|note): (?<message>.+)$",
-  "severity": "warning"
+  "outputPattern": "^(?<file>[^:]+):(?<line>\\d+):(?<col>\\d+): (?<severity>error|warning|note): (?<message>.+?) \\[(?<code>SC\\d+)\\]$",
+  "severity": "warning",
+  "codeUrl": "https://www.shellcheck.net/wiki/${code}"
 }
 ```
 

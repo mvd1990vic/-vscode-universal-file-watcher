@@ -7,6 +7,16 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.2] — 2026-04-02
+
+### Changed
+- README: added verified `codeUrl` templates for ruff, ESLint, shellcheck and mypy examples.
+- Fixed mypy `codeUrl` anchor prefix: `#code-${code}` (was `#${code}`).
+- Updated shellcheck `outputPattern` to capture the `SC\d+` code group, enabling the `codeUrl` link.
+- Added `ignoreExitCodes: [1]` to ruff and ESLint examples.
+
+---
+
 ## [1.4.1] — 2026-04-02
 
 ### Fixed
