@@ -7,6 +7,13 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.4.5] — 2026-04-02
+
+### Added
+- Extension icon (`images/icon.png`) — resized from 1024×1024 to 128×128 (11 KB) and registered via `"icon"` field in `package.json`.
+
+---
+
 ## [1.4.4] — 2026-04-02
 
 ### Fixed
