@@ -11,5 +11,5 @@
     "skipLibCheck": true,
     "moduleResolution": "Node16"
   },
-  "exclude": ["node_modules", ".vscode-test"]
+  "exclude": ["node_modules", ".vscode-test", "__mocks__", "vitest.config.ts", "src/test"]
 }
