@@ -86,6 +86,7 @@ The heart of the extension. Each element is a watcher object.
 | `continuationPattern` | `string` | — | Regex for context lines printed after the main diagnostic. Matched lines are appended to the previous diagnostic's message. Supports a `message` named group. |
 | `ignoreExitCodes` | `number[]` | `[]` | Exit codes that are expected (e.g. `[1]` for linters that exit with 1 on warnings). Others produce a warning in the output channel. |
 | `codeUrl` | `string` | — | URL template for error code docs. Use `${code}` as placeholder — the code in the Problems panel becomes a clickable link. |
+| `excludePatterns` | `string \| string[]` | `[]` | Glob pattern(s) to exclude from this watcher. Files matching any of these patterns will not trigger this watcher (e.g. `["**/.venv/**"]`). |
 
 ### Other settings
 
@@ -96,6 +97,7 @@ The heart of the extension. Each element is a watcher object.
 | `universalFileWatcher.clearDiagnosticsOnSave` | `boolean` | `true` | Clear previous diagnostics before each run |
 | `universalFileWatcher.showOutputOnError` | `boolean` | `false` | Auto-reveal output channel when errors are found |
 | `universalFileWatcher.debounceMs` | `number` | `300` | Milliseconds to wait after save before running |
+| `universalFileWatcher.excludePatterns` | `string[]` | `[]` | Global glob patterns — files matching any of these will not trigger any watcher (e.g. `["**/.venv/**", "**/node_modules/**"]`) |
 
 ---
 
