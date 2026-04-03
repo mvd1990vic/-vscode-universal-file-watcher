@@ -225,7 +225,7 @@ async function runAllMatchingWatchers(
     }
 }
 
-function matchesPattern(filePath: string, pattern: string | string[] | readonly string[]): boolean {
+function matchesPattern(filePath: string, pattern: string | string[]): boolean {
     const patterns = Array.isArray(pattern) ? pattern : [pattern];
     const normalized = filePath.replace(/\\/g, '/');
     return patterns.some(p => minimatch(normalized, p, { dot: true, matchBase: true }));
