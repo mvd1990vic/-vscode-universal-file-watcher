@@ -7,6 +7,13 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.5.1] — 2026-04-03
+
+### Fixed
+- TypeScript compilation error in `matchesPattern` signature (`readonly string[]` removed).
+
+---
+
 ## [1.5.0] — 2026-04-03
 
 ### Added
