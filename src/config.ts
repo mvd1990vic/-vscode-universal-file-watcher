@@ -23,6 +23,8 @@ export interface WatcherConfig {
     ignoreExitCodes: number[];
     /** URL template for the error code documentation. Use \`${code}\` as placeholder. Sets a clickable link in the Problems panel. */
     codeUrl: string | undefined;
+    /** Glob pattern(s) to exclude from this watcher. Files matching any of these patterns will not trigger this watcher. */
+    excludePatterns: string[];
 }
 
 export interface ExtensionConfig {
@@ -32,6 +34,8 @@ export interface ExtensionConfig {
     clearDiagnosticsOnSave: boolean;
     showOutputOnError: boolean;
     debounceMs: number;
+    /** Global glob patterns to exclude. Files matching any of these patterns will not trigger any watcher. */
+    excludePatterns: string[];
 }
 
 export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
@@ -54,6 +58,7 @@ export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
         applyTo: w.applyTo ?? 'matchedFile',
         ignoreExitCodes: w.ignoreExitCodes ?? [],
         codeUrl: w.codeUrl ?? undefined,
+        excludePatterns: w.excludePatterns ?? [],
     }));
 
     return {
@@ -63,6 +68,7 @@ export function getExtensionConfig(resource?: vscode.Uri): ExtensionConfig {
         clearDiagnosticsOnSave: raw.get<boolean>('clearDiagnosticsOnSave', true),
         showOutputOnError: raw.get<boolean>('showOutputOnError', false),
         debounceMs: raw.get<number>('debounceMs', 300),
+        excludePatterns: raw.get<string[]>('excludePatterns', []),
     };
 }
 

@@ -7,6 +7,14 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.5.0] — 2026-04-03
+
+### Added
+- `excludePatterns` on each watcher — glob pattern(s) to skip that specific watcher for matching files (e.g. `["**/.venv/**"]`).
+- Global `universalFileWatcher.excludePatterns` setting — glob pattern(s) that prevent any watcher from running on matching files.
+
+---
+
 ## [1.4.5] — 2026-04-02
 
 ### Added

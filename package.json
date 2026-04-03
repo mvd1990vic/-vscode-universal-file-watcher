@@ -2,7 +2,7 @@
   "name": "universal-file-watcher",
   "displayName": "Universal File Watcher",
   "description": "Run any external tool on file save and display its output as inline diagnostics — no plugin per tool required.",
-  "version": "1.4.5",
+  "version": "1.5.0",
   "publisher": "VictorMalyshkin",
   "icon": "images/icon.png",
   "license": "MIT",
@@ -171,6 +171,21 @@
               "codeUrl": {
                 "type": "string",
                 "markdownDescription": "URL template for error code documentation. Use `${code}` as a placeholder. When set, the code in the Problems panel becomes a clickable link. Example: `https://mypy.readthedocs.io/en/stable/error_codes.html#${code}`"
+              },
+              "excludePatterns": {
+                "oneOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "default": [],
+                "description": "Glob pattern(s) to exclude from this watcher. Files matching any of these patterns will not trigger this watcher. E.g. '**/.venv/**' or ['**/node_modules/**', '**/.venv/**']."
               }
             }
           }
@@ -204,6 +219,15 @@
           "scope": "resource",
           "default": 300,
           "description": "Milliseconds to wait after a save before running watchers (debounce)."
+        },
+        "universalFileWatcher.excludePatterns": {
+          "type": "array",
+          "scope": "resource",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "Global glob patterns to exclude from all watchers. Files matching any of these patterns will not trigger any watcher. E.g. ['**/.venv/**', '**/node_modules/**']."
         }
       }
     }

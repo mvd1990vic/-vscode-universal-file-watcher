@@ -118,6 +118,7 @@ describe('getExtensionConfig', () => {
         expect(w.ignoreExitCodes).toEqual([]);
         expect(w.continuationPattern).toBeUndefined();
         expect(w.codeUrl).toBeUndefined();
+        expect(w.excludePatterns).toEqual([]);
     });
 
     it('reads all watcher fields', () => {
@@ -152,5 +153,30 @@ describe('getExtensionConfig', () => {
         expect(w.ignoreExitCodes).toEqual([1, 2]);
         expect(w.continuationPattern).toBe('^note:');
         expect(w.codeUrl).toBe('https://example.com/${code}');
+    });
+
+    it('reads watcher excludePatterns', () => {
+        __setConfig({
+            watchers: [{
+                name: 'mypy',
+                filePattern: '**/*.py',
+                command: 'mypy ${file}',
+                outputPattern: '.*',
+                excludePatterns: ['**/.venv/**', '**/node_modules/**'],
+            }],
+        });
+        const w = getExtensionConfig().watchers[0] as WatcherConfig;
+        expect(w.excludePatterns).toEqual(['**/.venv/**', '**/node_modules/**']);
+    });
+
+    it('reads global excludePatterns', () => {
+        __setConfig({ excludePatterns: ['**/.venv/**'] });
+        const cfg = getExtensionConfig();
+        expect(cfg.excludePatterns).toEqual(['**/.venv/**']);
+    });
+
+    it('global excludePatterns defaults to empty array', () => {
+        const cfg = getExtensionConfig();
+        expect(cfg.excludePatterns).toEqual([]);
     });
 });

@@ -156,8 +156,15 @@ async function runAllMatchingWatchers(
         diagnosticsManager.clearForFile(filePath);
     }
 
+    // Skip entirely if file matches global exclude patterns.
+    if (cfg.excludePatterns.length > 0 && matchesPattern(filePath, cfg.excludePatterns)) {
+        return;
+    }
+
     const matchingWatchers = watchers.filter(
-        w => w.enabled && matchesPattern(filePath, w.filePattern),
+        w => w.enabled &&
+            matchesPattern(filePath, w.filePattern) &&
+            (w.excludePatterns.length === 0 || !matchesPattern(filePath, w.excludePatterns)),
     );
 
     if (matchingWatchers.length === 0) {
@@ -218,7 +225,7 @@ async function runAllMatchingWatchers(
     }
 }
 
-function matchesPattern(filePath: string, pattern: string | string[]): boolean {
+function matchesPattern(filePath: string, pattern: string | string[] | readonly string[]): boolean {
     const patterns = Array.isArray(pattern) ? pattern : [pattern];
     const normalized = filePath.replace(/\\/g, '/');
     return patterns.some(p => minimatch(normalized, p, { dot: true, matchBase: true }));
