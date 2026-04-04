@@ -7,6 +7,13 @@ this project adheres to [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [1.5.2] — 2026-04-04
+
+### Fixed
+- Bare folder names in `excludePatterns` (e.g. `"dist"`, `"node_modules"`) now correctly exclude all files nested inside that directory. Previously only the exact basename was matched due to a `minimatch` flag.
+
+---
+
 ## [1.5.1] — 2026-04-03
 
 ### Fixed
