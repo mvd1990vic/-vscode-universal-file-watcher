@@ -225,10 +225,20 @@ async function runAllMatchingWatchers(
     }
 }
 
-function matchesPattern(filePath: string, pattern: string | string[]): boolean {
+export function matchesPattern(filePath: string, pattern: string | string[]): boolean {
     const patterns = Array.isArray(pattern) ? pattern : [pattern];
     const normalized = filePath.replace(/\\/g, '/');
-    return patterns.some(p => minimatch(normalized, p, { dot: true, matchBase: true }));
+    return patterns.some(p => {
+        if (minimatch(normalized, p, { dot: true, matchBase: true })) {
+            return true;
+        }
+        // If the pattern is a bare name (no glob chars, no slashes), treat it as a
+        // directory name and match any file nested inside it.
+        if (!/[*?{[]/.test(p) && !p.includes('/')) {
+            return minimatch(normalized, `**/${p}/**`, { dot: true });
+        }
+        return false;
+    });
 }
 
 async function expandWordRanges(
